@@ -1,0 +1,35 @@
+#PUNTO FIJO MULTIVARIABLE (con desplazamiento sucesivo)
+
+#Código que calcula el resultado del ejemplo de la pág. 30 de mi cuaderno (desplazamientos sucesivos)
+import numpy as np
+
+#Definamos la función vectorial g
+def g(x):             #donde x que acepta la función es el vector
+  g = np.array([1/6+1/3*np.cos(x[1]*x[2]),
+                1/9*np.sqrt(x[0]**2+np.sin(x[2])+1.06)-0.1,
+                1/20*(-np.exp(-x[0]*x[1])-(10*np.pi-3)/3)])
+  return g
+
+x0 = np.array([0.1,0.1,-0.1])
+tol = 1e-5
+itmax = 100
+
+i = 1
+
+#Algoritmo de punto fijo multivariable
+while(i<=itmax):
+  x = g(x0) #vector 'x'
+  error = np.linalg.norm(x-x0) # ó np.linalg,norm(x-x0,np.inf) para norma infinita
+  print('Vector (',i,') = ',x,',\tError = ',error)
+  if(error<tol):
+    break
+  else:
+    i+=1
+    x0 = x.copy()
+
+
+if(i>itmax):
+  print('\nERROR, se alcanzó el máximo de iteraciones, pero no la tolerancia...')
+else:
+  print('\nLa solución aproximada es el vector: ', x)
+  print('Se alcanzó en la iteración: ', i)
