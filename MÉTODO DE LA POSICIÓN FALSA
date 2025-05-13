@@ -1,0 +1,36 @@
+#MÉTODO DE LA POSICIÓN FALSA con Python
+
+#Algoritmo posición alsa para raíces
+#busca en intervalo  [a,b]
+# tolera = error
+
+import numpy as np
+
+# INGRESO
+fx = lambda x: exp(x) + pow(2,-x) + 2*np.cos(x) - 6
+
+a = 1
+b = 2
+tolera = 0.00001
+
+#PROCEDIMIENTO
+tramo = abs(b-a)
+i = 2
+while not (tramo<=tolera):
+  fa = fx(a)
+  fb = fx(b)
+  c = b - fb*(a-b)/(fa-fb)
+  fc = fx(c)
+
+  cambio = np.sign(fa)*np.sign(fc)
+  if cambio>0:
+    tramo = abs(c-a)
+    a = c
+  else:
+    tramo = abs(b-c)
+    b = c
+  i+=1
+#SALIDA
+print(c)
+print(i)
+print(tramo)
