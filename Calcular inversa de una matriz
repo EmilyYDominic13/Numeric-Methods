@@ -1,0 +1,40 @@
+#Código para calcular matrices inversas
+import sympy as sp
+import numpy as np
+
+#Definir matriz de coeficientes
+A = np.array([[    0.,    -0.5,  1.,     0,      0.,   0.,    0.,   0.,   0.,   0.,    0., 0.],
+              [    0.,      0.,  0.,  0.25,    -0.5,   0.,    0.,   0.,   0.,   0.,    0., 0.],
+              [    0.,     -1.,  1.,    0.,      0.,   0.,    0.,   0.,   0.,   0.,    0., 0.],
+              [    0.,      0.,  0.,    0.,     0.,    0.,    0.,   0.,   0.,   1.,    1., 1.],
+              [    0.,      0.,  0.,    0.,     0.,    0.,  0.25,  0.5,   1.,   0.,    0., 0.],
+              [    0.,      0.,  0.,    0.,     0.,    1.,    0.,   0.,   0.,   0.,    0., 0.],
+              [    0.,      0.,  1.,    0.,     0.,    0.,    0.,   0.,   1.,   0.,    0., 0.],
+              [    0.,      0.,  0.,    0.,     1.,    0.,    0.,  -1.,   0.,   0.,    0., 0.],
+              [    0.,      0.,  0.,    0.,     0.,    0.,    1.,   1.,   0.,  -1.,   -1., 0.],
+              [    0.,      0.,  0.,    0.,     0.,    0.,    0.,   0.,   0.,  0.25,  0.5, 1.],
+              [    0.,      0.,  0.,    0.,     0.,    0.,    0.,   0.,   0.,   0.,    0., 0.],
+              [    0.,      0.,  0.,    0.,     0.,    0.,    0.,   0.,   0.,   0.,    0., 0.],])
+
+#Definimos la función vectorial b
+b = np.array([[0.13793],
+              [-0.86207],
+              [0.03846],
+              [0.013793],
+              [1.],
+              [1.],
+              [0.],
+              [0.],
+              [0.],
+              [0.13793],
+              [0.],
+              [0.]])
+
+#Obtenemos la inversa de nuestra matriz de coeficientes y la imprimimos
+Ainv = np.linalg.inv(A)
+print(Ainv)
+print()
+
+#Haalamos h mediante: h(vector)= Jinv*f(vector)
+a = np.dot(Ainv, b)
+print('El vector resultante a es:\n',a)
