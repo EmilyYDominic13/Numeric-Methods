@@ -1,0 +1,45 @@
+#NEWTON-RAPHSON
+
+#Código para calcular matrices inversas
+import sympy as sp
+import numpy as np
+
+x1, x2, x3 = sp.symbols('x1 x2 x3')
+
+#Vector de arranque
+x0 = np.array([1.03668708,1.08592383,0.92977932])
+
+#Definir matriz Jacobiana
+J = np.array([[15,2*x2,-4],
+             [2*x1,10,-1],
+              [0,3*x2**2,-25]])
+
+#Definir función vectorial
+f = np.array([[15*x1+x2**2-4*x3-13],
+              [x1**2+10*x2-x3-11],
+              [0*x1+x2**3-25*x3+22]])
+
+#Evaluamos J
+J = sp.sympify(J).subs(x1, x0[0]).subs(x2, x0[1]).subs(x3, x0[2])    #([(x1, x0[0]), (x2, x0[1])])
+
+#Evaluamos f
+f = sp.sympify(f).subs(x1, x0[0]).subs(x2, x0[1]).subs(x3, x0[2])
+
+#TRANFROMAMOS J y f a flotantes en lugar de simbolico
+J = np.array(J, dtype=float)   #np.array(J).astype(float)
+f = np.array(f, dtype=float)
+
+#Calculamos la inversa
+Jinv = np.linalg.inv(J)
+print(Jinv)
+print()
+
+#Haalamos h mediante: h(vector)= Jinv*f(vector)
+h = np.dot(Jinv, -f)
+print('El vector h es:\n',h)
+
+xn = x0 + np.transpose(h)
+print('\nEl vector xn es:\n',xn)
+
+error = np.linalg.norm(xn-x0)
+print('\nEl error es:',error)
