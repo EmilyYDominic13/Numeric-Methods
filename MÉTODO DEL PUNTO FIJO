@@ -1,0 +1,44 @@
+#MÉTODO DEL PUNTO FIJO
+
+#Código para realizar el método de punto fijo para ec. no lineales     #20/08/24
+#Para agregarle una matriz con los valores obtenidos
+
+import numpy as np
+
+print('\t\t\tPrograma que resuelve ec. no lineales mediante el método de de punto fijo.\t\t\t\n')
+gx = input('Ingresa la función g(x): ')
+
+#Pedimos el punto inicial
+p0 = float(input('Ingresa el valor del punto inicial p0: '))
+
+#Volviendo la función evaluable
+g = eval(f'lambda x:{gx}')
+
+#Pedimos valores del criterio de paro: TOL y número de iteraciones
+tol = float(input("Establece la tolerancia: "))
+itmax = int(input("Ingresa el valor máximo de iteraciones: "))
+
+i = 1
+
+#Creamos el arreglo
+tabla = [] #arreglo vacío/lista vacía
+
+while (i<=itmax):
+  p = g(p0)
+  error = abs(p-p0)
+  tabla.append([i,p,error]) #como es un arreglo lo ponemos entre corchetes
+  if (error<=tol):
+    break
+  else:
+    i+=1
+    p0 = p
+
+tabla = np.array(tabla) #Transfromando la tabla a un arreglo en 2D
+
+#Imprimiendo resultados
+if (i>itmax):
+  print('\n ERROR, se alcanzó el máximo de iteraciones, pero no la tolerancia...')
+else:
+  print('\n El valor aproximado de la raíz es: ', p)
+  print(' Se obtuvo en la iteración ', i, '.')
+  print('\n', tabla)
