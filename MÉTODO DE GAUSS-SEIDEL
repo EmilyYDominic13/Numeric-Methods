@@ -1,0 +1,65 @@
+#MÉTODO DE GAUSS-SEIDEL
+
+#Programa que resuelve sistemas lineales por el método de Gauss-Seidel
+#Se ingresan manualmente los coeficientes de la matriz y los vectores
+import numpy as np
+
+print('\t\t\tPrograma que resuelve Ax=b por Gauss-Seidel\t\t\t\n')
+
+#Definimos valores de arranque
+n = int(input('Indica el número de incógnitas: '))
+tol = float(input('Ingresa la tolerancia: '))
+itmax = int(input('Establece el máximo de iteraciones: '))
+
+#Definamos dos funciones para llenar la matriz de coeficientes y los vectores
+def llena_matriz(n):
+   A = np.zeros((n,n)) #matriz de ceros de 'n' renglones por 'n' columnas
+   for i in range(n):  #recorriendo los renglones
+     for j in range(n):  #recorriendo las columnas
+       print('Introduce el elemento: a[', i+1,',',j+1,']') #Para que visualmente sea más claro
+       A[i,j] = float(input(''))
+   return A
+       #Análogo a las dos líneas anteriores: A[i,j] = float(input(f'A[{i+1},{j+1}]= '))
+
+def llena_vector(n):
+  V = np.zeros(n)     #'V' porque es un vector
+  for i in range(n):
+    print('Introduce el elemento: [', i+1,']') #Nuevamente para que visualmente sea entendible
+    V[i] = float(input(''))
+  return V
+
+#LLenamos la matriz de coeficientes y los vectores
+print('\nLlenando matriz de coeficientes...')
+A = llena_matriz(n)
+print('\nLlenando vector de términos independientes...')
+b = llena_vector(n) #Vector de términos independientes
+print('\nLlenando vector de arranque...')
+x0 = llena_vector(n) #Vector de arranque
+print()
+
+#Comenzamos con el código del método de Gauss-Seidel
+k = 1
+xn = np.copy(x0) #Vector donde guardamos las aproximaciones #np.zeros(n)
+
+while(k<=itmax):
+  for i in range(n):
+    S = 0   #'S' porque indica las sumas
+    for j in range(n):
+      if(j!=i):
+        S = S + A[i,j]*xn[j] #donde A[i][j] = A[i,j]
+    xn[i] = (b[i]-S)/A[i,i]  #donde A[i,i] son los elementos de la diagonal
+  error = np.linalg.norm(xn-x0) #usamos norma euclidiana l2
+  error2 = error/np.linalg.norm(xn)
+  print(f'~Iteración {k}: xn = {xn}, error = {error},\t\terror2 = {error2}')
+  if(error<=tol):
+    break
+  else:
+    k+=1
+    x0 = np.copy(xn) #xn.copy()
+
+#Imprimimos los resultados
+if(k>itmax):
+  print('\nERROR, se alcanzó el máximo de iteraciones, pero no la tolerancia...')
+else:
+  print('\nLa solución aproximada es: ', xn)
+  print('Se alcanzó en la iteración: ', k)
