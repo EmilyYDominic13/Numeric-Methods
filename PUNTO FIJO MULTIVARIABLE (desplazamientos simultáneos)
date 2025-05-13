@@ -1,0 +1,36 @@
+#PUNTO FIJO MULTIVARIABLE (desplazamientos simultáneos)
+
+#Código que calcula el resultado del ej. de la pág. 30 de mi cuaderno (desplazamientos simultáneos)
+import numpy as np
+
+#Definamos la función vectorial g
+def g(x):             #donde x que acepta la función es el vector
+  xk = x.copy()
+  xk[0] = 1/6+1/3*np.cos(xk[1]*xk[2])
+  xk[1] = 1/9*np.sqrt(xk[0]**2+np.sin(xk[2])+1.06)-0.1
+  xk[2] = 1/20*(-np.exp(-xk[0]*xk[1])-(10*np.pi-3)/3)
+  return xk
+
+x0 = np.array([0.1,0.1,-0.1])
+tol = 1e-5
+itmax = 100
+
+i = 1
+
+#Algoritmo de punto fijo multivariable
+while(i<=itmax):
+  x = g(x0) #vector 'x'
+  error = np.linalg.norm(x-x0) # ó np.linalg.norm(x-x0,np.inf) para norma infinita
+  print('Vector (',i,') = ',x,',\tError = ',error)
+  if(error<tol):
+    break
+  else:
+    i+=1
+    x0 = x.copy()
+
+
+if(i>itmax):
+  print('\nERROR, se alcanzó el máximo de iteraciones, pero no la tolerancia...')
+else:
+  print('\nLa solución aproximada es el vector: ', x)
+  print('Se alcanzó en la iteración: ', i)
