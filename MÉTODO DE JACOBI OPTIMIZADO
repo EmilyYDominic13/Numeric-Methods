@@ -1,0 +1,63 @@
+#MÉTODO DE JACOBI OPTIMIZADO
+
+#Programa que resuelve sistemas lineales por el método de Jacobi
+#Se ingresan manualmente los coeficientes de la matriz y los vectores
+import numpy as np
+
+print('\t\t\tPrograma que resuelve el sistema lineal Ax=b por Jacobi\t\t\t\n')
+
+#Definimos valores de arranque
+n = int(input('Indica el número de incógnitas: '))
+tol = float(input('Ingresa la tolerancia: '))
+itmax = int(input('Establece el máximo de iteraciones: '))
+
+#Definamos dos funciones para llenar la matriz de coeficientes y los vectores
+def llena_matriz(n):
+   A = np.zeros((n,n)) #matriz de ceros de 'n' renglones por 'n' columnas
+   for i in range(n):  #recorriendo los renglones
+     for j in range(n):  #recorriendo las columnas
+       print('Introduce el elemento: ', i+1,',',j+1) #Para que visualmente sea más claro
+       A[i,j] = float(input(''))
+   return A
+       #Análogo a las dos líneas anteriores: A[i,j] = float(input(f'A[{i+1},{j+1}]= '))
+
+def llena_vector(n):
+  V = np.zeros(n)     #'V' porque es un vector
+  for i in range(n):
+    print('Introduce el elemento: ', i+1) #Nuevamente para que visualmente sea entendible
+    V[i] = float(input(''))
+  return V
+
+#LLenamos la matriz de coeficientes y los vectores
+print('\nLlenando matriz de coeficientes...')
+A = llena_matriz(n)
+print('\nLlenando vector de términos independientes...')
+b = llena_vector(n) #Vector de términos independientes
+print('\nLlenando vector de arranque...')
+x0 = llena_vector(n) #Vector de arranque
+
+#Comenzamos con el código del método de Jacobi
+k = 1
+xn = np.zeros(n)
+c = np.zeros(n)
+
+while(k<=itmax):
+  for i in range(n):
+    c[i] = b[i]
+    for j in range(n):
+      if(j!=i):
+        c[i] = c[i] - A[i,j]*x0[j] #donde A[i][j] = A[i,j]
+        xn[i] = c[i]/A[i,i] #donde A[i,i] son los elementos de la diagonal
+  error = np.linalg.norm(xn-x0) #usamos norma euclidiana l2
+  if(error<=tol):
+    break
+  else:
+    k+=1
+    x0 = xn.copy()
+
+#Imprimimos los resultados
+if(k>itmax):
+  print('\nERROR, se alcanzó el máximo de iteraciones, pero no la tolerancia...')
+else:
+  print('\nLa solución aproximada es: ', xn)
+  print('Se alcanzó en la iteración: ', k)
